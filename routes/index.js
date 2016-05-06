@@ -43,13 +43,10 @@ router.put('/board', function (req, res, next) {
     res.sendStatus(400);
 });
 
-function findValueInList(key) {
-    var index;
-    for (index in list) {
+function findIndexInList(key) {
+    for (var index in list) {
         var value = list[index];
-
         if (value && value.key === key) {
-
             return list.indexOf(value);
         }
     }
@@ -61,7 +58,7 @@ router.delete('/board', function (req, res, next) {
     var body = req.body;
 
     if (!isEmpty(body)) {
-        var index = findValueInList(body.key);
+        var index = findIndexInList(body.key);
         delete list[index];
         res.sendStatus(200);
         return;
