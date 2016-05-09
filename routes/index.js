@@ -30,10 +30,8 @@ router.post('/board/', function (req, res, next) {
 });
 
 router.put('/board', function (req, res, next) {
-    var body = req.body;
-
-    if (!isEmpty(body)) {
-        var value = findIndexInList(body);
+    if (!isEmpty(req.body)) {
+        var value = findValueInList(req.body.key);
         if (value) {
             value.title = req.body.title;
             value.content = req.body.content;
@@ -48,10 +46,11 @@ router.put('/board', function (req, res, next) {
 function findIndexInList(key) {
     for (var index in list) {
         var value = list[index];
-        if( JSON.stringify(value) === JSON.stringify(key) ) {
+        if (value && value.key === key) {
             return list.indexOf(value);
         }
     }
+
     return undefined;
 }
 
@@ -59,14 +58,16 @@ router.delete('/board', function (req, res, next) {
     var body = req.body;
 
     if (!isEmpty(body)) {
-        var index = findIndexInList(body);
-        list.splice(index,1);
+        var index = findIndexInList(body.key);
+        delete list[index];
         res.sendStatus(200);
         return;
     }
 
     list=[];
     res.sendStatus(200);
+
+    return
 });
 
 
